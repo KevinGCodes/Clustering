@@ -9,5 +9,7 @@ public interface Subject {
     void detachObserver(Observer obs);
     void notifyObservers();
     List<Point> getData();
+    void applyClustering();
+    void reset();
     void addPoint(float x, float y);
 }

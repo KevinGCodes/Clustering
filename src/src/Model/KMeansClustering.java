@@ -44,7 +44,7 @@ public class KMeansClustering implements ClusteringAlgorithm{
         HashMap<Point, List<Point>> bestClustering = clustering;
         for(int i = 0; i< 150; i++){
             List<Point> newReferencePoints = getReferencePoints(k);
-            HashMap<Point, List<Point>> newClustering = Iteration(referencePoints);
+            HashMap<Point, List<Point>> newClustering = Iteration(newReferencePoints);
             for(int j = 0; j < 50; j++){
                 List<Point> newTmp = new ArrayList<>();
                 newClustering.values().forEach(arr -> newTmp.add(calculateMean(arr)));

@@ -47,10 +47,15 @@ public class DataSet implements Subject {
         for(Point p : data)
             if(p.getX() == x && p.getY() == y) return;
         this.data.add(new Point(x, y));
-        applyClustering();
-        notifyObservers();
+        this.notifyObservers();
     }
-
+    @Override
+    public void reset(){
+        this.data = new ArrayList<>();
+        this.clusteringAlg = new KMeansClustering(this.data);
+        this.notifyObservers();
+    }
+    @Override
     public void applyClustering(){
         var clustering = ((KMeansClustering)clusteringAlg).cluster(4);
         this.clusterCount = clustering.keySet().size();
