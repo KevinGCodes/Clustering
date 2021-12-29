@@ -7,6 +7,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class DataSet implements Subject {
     private List<Observer> observers = new CopyOnWriteArrayList<>();
     private List<Point> data = new ArrayList<>();
+
+    public List<Point> getData(){
+        return this.data;
+    }
     @Override
     public void attachObserver(Observer obs) {
         if(obs == null) return;
@@ -21,6 +25,13 @@ public class DataSet implements Subject {
 
     @Override
     public void notifyObservers() {
-        for(Observer obs : observers) obs.update();
+        for(Observer obs : this.observers){
+            obs.updateObserver();
+        }
+    }
+
+    public void addPoint(float x, float y){
+        this.data.add(new Point(x, y));
+        notifyObservers();
     }
 }
