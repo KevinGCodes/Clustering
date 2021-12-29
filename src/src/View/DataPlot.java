@@ -23,15 +23,14 @@ public class DataPlot extends JPanel implements Observer, MouseListener {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        System.out.print("painting");
         List<Point> data = dataset.getData();
         setBackground(Color.darkGray);
 
         for(Point p : data){
-            int px = Math.round(p.getX()*getWidth());
-            int py = Math.round(p.getY()*getHeight());
-            System.out.println(px + " and " +py);
-            g.setColor(Color.WHITE);
+            int px = (int)Math.round(p.getX()*getWidth());
+            int py = (int)Math.round(p.getY()*getHeight());
+            double step = (double)p.getCol()/((DataSet)dataset).clusterCount;
+            g.setColor(Color.getHSBColor((float)step, 0.5f, 0.5f));
             g.fillOval(px - 5, py - 5, 10, 10);
         }
 
