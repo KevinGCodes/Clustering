@@ -12,32 +12,35 @@ public class DataPlot extends JPanel implements Observer, MouseListener {
     private final int WIDTH = 600;
     private final int HEIGHT = 600;
     private final int PADDING = 75;
-    private Graphics graphic;
 
     public DataPlot(Subject dataset){
         this.dataset = dataset;
         setMinimumSize(new Dimension(400, 400));
-        setPreferredSize(new Dimension(600, 600));
-        setMaximumSize(new Dimension(800, 800));
+        setPreferredSize(new Dimension(900, 900));
+        setMaximumSize(new Dimension(1200, 1200));
         this.addMouseListener(this);
     }
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        graphic = g;
         setBackground(Color.darkGray);
         drawCoordinateSystem(g);
+        drawPoints(g);
+    }
+
+    private void drawPoints(Graphics g){
         List<Point> data = dataset.getData();
+        int lineWidth = getWidth()- 2*PADDING;
+        int lineHeight = getHeight() - 2*PADDING;
 
         for(Point p : data){
-            int px = (int)Math.round(p.getX()*getWidth());
-            int py = (int)Math.round(p.getY()*getHeight());
+            int px = (int)Math.round(p.getX()*lineWidth);
+            int py = (int)Math.round(p.getY()*lineHeight);
             double step = (double)p.getCol()/((DataSet)dataset).clusterCount;
             g.setColor(Color.getHSBColor((float)step, 0.5f, 0.5f));
-            g.fillOval(px - 5, py - 5, 10, 10);
+            g.fillOval(PADDING + px - 5, PADDING + lineHeight - py - 5, 10, 10);
         }
-
     }
 
     private void drawCoordinateSystem(Graphics g){
@@ -62,10 +65,13 @@ public class DataPlot extends JPanel implements Observer, MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        System.out.println("mouse-coordinates: " + e.getX() + " + " + e.getY());
-        System.out.println(dataset.getData());
+        int lineWidth = getWidth()- 2*PADDING;
+        int lineHeight = getHeight() - 2*PADDING;
         if(e.getX() < PADDING || e.getY() < PADDING) return;
-        dataset.addPoint((float)e.getX()/getWidth(),(float)e.getY()/getHeight());
+        if(e.getX() > getWidth() - PADDING || e.getY() > getHeight() - PADDING) return;
+        double x = ((double)e.getX() - PADDING)/lineWidth;
+        double y = (getHeight() - (double)e.getY() - PADDING)/lineHeight;
+        dataset.addPoint(x, y);
     }
 
     @Override
@@ -79,6 +85,6 @@ public class DataPlot extends JPanel implements Observer, MouseListener {
 
     @Override
     public void updateObserver() {
-        repaint(0);
+        paintImmediately(0,0, getWidth(), getHeight());
     }
 }
