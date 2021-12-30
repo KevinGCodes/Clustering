@@ -1,5 +1,6 @@
 package tests;
 
+import Algorithms.ClusteringAlgorithm;
 import Model.Point;
 import org.junit.Test;
 import Algorithms.KMeansClustering;
@@ -46,7 +47,7 @@ public class KMeansClusteringTests {
     public void calculateMeanTest(){
         List<Point> dataset = generateDataset();
         KMeansClustering kmeans= new KMeansClustering(dataset);
-        Point mean = kmeans.calculateMean(dataset);
+        Point mean = ClusteringAlgorithm.calculateMean(dataset);
         System.out.println(mean);
         double expectedX = dataset.get(0).getX() + dataset.get(1).getX() + dataset.get(2).getX() + dataset.get(3). getX();
         double expectedY = dataset.get(0).getY() + dataset.get(1).getY() + dataset.get(2).getY() + dataset.get(3). getY();
@@ -58,10 +59,10 @@ public class KMeansClusteringTests {
     @Test
     public void calculateVarianceTest(){
         Map<Point, List<Point>> mapping = generateClustering();
-        double variance = KMeansClustering.calculateVariance(mapping);
+        double variance = ClusteringAlgorithm.calculateVariance(mapping);
         double expectedVariance = 0;
         for(List<Point> list : mapping.values()){
-            Point mean = KMeansClustering.calculateMean(list);
+            Point mean = ClusteringAlgorithm.calculateMean(list);
             for(int i = 0; i < 4; i++) expectedVariance += list.get(i).getDiff(mean)* list.get(i).getDiff(mean);
         }
         System.out.print(variance + " + " + expectedVariance);

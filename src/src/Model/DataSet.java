@@ -2,6 +2,7 @@ package Model;
 
 import Algorithms.ClusteringAlgorithm;
 import Algorithms.KMeansClustering;
+import Algorithms.PAMClustering;
 import io.CSVLoader;
 
 import java.util.ArrayList;
@@ -16,12 +17,12 @@ public class DataSet implements Subject {
     public int clusterCount = 1;
 
     public DataSet(){
-        this.clusteringAlg = new KMeansClustering(this.data);
+        this.clusteringAlg = new PAMClustering(this.data);
     }
 
     public DataSet(List<Point> dataset){
         data = dataset;
-        this.clusteringAlg = new KMeansClustering(this.data);
+        this.clusteringAlg = new PAMClustering(this.data);
     }
 
 
@@ -75,12 +76,12 @@ public class DataSet implements Subject {
     @Override
     public void reset(){
         this.data = new ArrayList<>();
-        this.clusteringAlg = new KMeansClustering(this.data);
+        this.clusteringAlg = new PAMClustering(this.data);
         this.notifyObservers();
     }
     @Override
     public void applyClustering(int k){
-        var clustering = ((KMeansClustering)clusteringAlg).cluster(k);
+        var clustering = clusteringAlg.cluster(k);
         this.clusterCount = clustering.keySet().size();
         var lists = clustering.values().stream().collect(Collectors.toList());
         for(int i = 0; i < lists.size(); i++){
@@ -89,5 +90,22 @@ public class DataSet implements Subject {
             }
         }
         notifyObservers();
+    }
+
+    public void applyOptimalClustering(){
+        var clustering = clusteringAlg.cluster();
+        this.clusterCount = clustering.keySet().size();
+        var lists = clustering.values().stream().collect(Collectors.toList());
+        for(int i = 0; i < lists.size(); i++){
+            for(int j = 0; j < lists.get(i).size(); j++){
+                lists.get(i).get(j).setCol(i + 1);
+            }
+        }
+        System.out.println(clusterCount);
+        notifyObservers();
+    }
+
+    public void setClusteringAlg(ClusteringAlgorithm alg){
+        this.clusteringAlg = alg;
     }
 }

@@ -10,6 +10,7 @@ public interface Subject {
     void notifyObservers();
     List<Point> getData();
     void applyClustering(int k);
+    void applyOptimalClustering();
     void reset();
     void addPoint(double x, double y);
 }

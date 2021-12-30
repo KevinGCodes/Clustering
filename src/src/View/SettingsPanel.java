@@ -27,19 +27,14 @@ public class SettingsPanel extends JPanel implements Observer {
         add(slider);
         add(Box.createRigidArea(new Dimension(0, 20)));
 
-        JPanel buttonPane = new JPanel();
-        buttonPane.setBackground(Color.darkGray);
-        buttonPane.add(Box.createRigidArea(new Dimension(10, 0)));
-        buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
-        JButton clusterButton = createButton("Cluster");
+
+        JButton clusterButton = createButton("Cluster with k clusters");
         clusterButton.addActionListener(e -> this.dataset.applyClustering(slider.getValue()));
-        buttonPane.add(clusterButton);
-        buttonPane.add(Box.createHorizontalGlue());
-        JButton reset = createButton("reset");
-        reset.addActionListener(e -> this.dataset.reset());
-        buttonPane.add(reset);
-        buttonPane.add(Box.createRigidArea(new Dimension(10, 0)));
-        add(buttonPane);
+        add(clusterButton);
+        add(Box.createRigidArea(new Dimension(0, 20)));
+        JButton optimalCluster = createButton("cluster using Elbow method");
+        optimalCluster.addActionListener(e -> this.dataset.applyOptimalClustering());
+        add(optimalCluster);
 
         add(Box.createRigidArea(new Dimension(0, 20)));
         JTextField csvInput = createTextfield();
@@ -48,6 +43,11 @@ public class SettingsPanel extends JPanel implements Observer {
         JButton loadCSV = createButton("load csv file!");
         add(loadCSV);
         loadCSV.addActionListener(e -> ((DataSet)dataset).loadData(csvInput.getText().strip()));
+
+        add(Box.createRigidArea(new Dimension(0, 20)));
+        JButton reset = createButton("reset");
+        reset.addActionListener(e -> this.dataset.reset());
+        add(reset);
 
     }
 
