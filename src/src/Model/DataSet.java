@@ -1,5 +1,7 @@
 package Model;
 
+import io.CSVLoader;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -24,6 +26,25 @@ public class DataSet implements Subject {
     public List<Point> getData(){
         return this.data;
     }
+
+    public void loadData(String fileName){
+        String[][] data = CSVLoader.load(fileName);
+        if(data == null) return;
+        reset();
+        double max = 0;
+        for(String[] line : data){
+            double x = Float.valueOf(line[0].strip());
+            double y = Float.valueOf(line[1].strip());
+            max = Math.max(max, x);
+            max = Math.max(max, y);
+        }
+        for(String[] line : data){
+            double x = Integer.valueOf(line[0].strip());
+            double y = Integer.valueOf(line[1].strip());
+            addPoint(x/max, y/max);
+        }
+        System.out.print(this.getData());
+    }
     @Override
     public void attachObserver(Observer obs) {
         if(obs == null) return;
@@ -43,7 +64,7 @@ public class DataSet implements Subject {
         }
     }
 
-    public void addPoint(float x, float y){
+    public void addPoint(double x, double y){
         for(Point p : data)
             if(p.getX() == x && p.getY() == y) return;
         this.data.add(new Point(x, y));
