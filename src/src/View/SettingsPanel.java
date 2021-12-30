@@ -1,5 +1,7 @@
 package View;
 
+import Algorithms.KMeansClustering;
+import Algorithms.PAMClustering;
 import Model.DataSet;
 import Model.Observer;
 import Model.Subject;
@@ -25,6 +27,26 @@ public class SettingsPanel extends JPanel implements Observer {
         add(Box.createRigidArea(new Dimension(0, 10)));
         JSlider slider = createSlider();
         add(slider);
+        add(Box.createRigidArea(new Dimension(0, 20)));
+
+        JComboBox<String> dropDown= new JComboBox<>(new String[]{"K-Means-Clustering", "PAM-Clustering"});
+        dropDown.setPreferredSize(new Dimension(150, 20));
+        dropDown.setMaximumSize(new Dimension(150, 20));
+        dropDown.addActionListener(e -> {
+            String val = (String)dropDown.getSelectedItem();
+            var set = ((DataSet)this.dataset);
+            switch(val){
+                case "K-Means-Clustering":
+                    set.setClusteringAlg(new KMeansClustering(set.getData()));
+                    break;
+                case "PAM-Clustering":
+                    set.setClusteringAlg(new PAMClustering(set.getData()));
+                    break;
+            }
+            System.out.println();
+        });
+        add(dropDown);
+
         add(Box.createRigidArea(new Dimension(0, 20)));
 
 
