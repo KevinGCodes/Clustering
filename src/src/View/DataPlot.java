@@ -37,7 +37,7 @@ public class DataPlot extends JPanel implements Observer, MouseListener {
         for(Point p : data){
             int px = (int)Math.round(p.getX()*lineWidth);
             int py = (int)Math.round(p.getY()*lineHeight);
-            double step = (double)p.getCol()/((DataSet)dataset).clusterCount;
+            double step = (double)p.getCol()/((DataSet)dataset).getClusterCount();
             g.setColor(Color.getHSBColor((float)step, 0.5f, 0.5f));
             g.fillOval(PADDING + px - 5, PADDING + lineHeight - py - 5, 10, 10);
         }

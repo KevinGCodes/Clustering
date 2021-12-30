@@ -14,15 +14,15 @@ public class DataSet implements Subject {
     private List<Observer> observers = new CopyOnWriteArrayList<>();
     private List<Point> data = new ArrayList<>();
     private ClusteringAlgorithm clusteringAlg;
-    public int clusterCount = 1;
+    private int clusterCount = 1;
 
     public DataSet(){
-        this.clusteringAlg = new PAMClustering(this.data);
+        this.clusteringAlg = new KMeansClustering(this.data);
     }
 
     public DataSet(List<Point> dataset){
         data = dataset;
-        this.clusteringAlg = new PAMClustering(this.data);
+        this.clusteringAlg = new KMeansClustering(this.data);
     }
 
 
@@ -76,7 +76,7 @@ public class DataSet implements Subject {
     @Override
     public void reset(){
         this.data = new ArrayList<>();
-        this.clusteringAlg = new PAMClustering(this.data);
+        this.clusteringAlg = new KMeansClustering(this.data);
         this.notifyObservers();
     }
     @Override
@@ -101,11 +101,14 @@ public class DataSet implements Subject {
                 lists.get(i).get(j).setCol(i + 1);
             }
         }
-        System.out.println(clusterCount);
         notifyObservers();
     }
 
     public void setClusteringAlg(ClusteringAlgorithm alg){
         this.clusteringAlg = alg;
+    }
+
+    public int getClusterCount(){
+        return this.clusterCount;
     }
 }

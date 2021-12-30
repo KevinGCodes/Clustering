@@ -12,7 +12,6 @@ public class KMeansClustering implements ClusteringAlgorithm {
 
     @Override
     public Map<Point, List<Point>> cluster(int k){
-        System.out.println("neeiiiin");
         k = Math.min(k, getPoints().size());
         List<Point> referencePoints = getReferencePoints(k);
         HashMap<Point, List<Point>> clustering = Iteration(referencePoints);
