@@ -1,47 +1,54 @@
 package View;
 
 import Model.DataSet;
+import Model.Observer;
 import Model.Subject;
-import io.CSVLoader;
 
 import javax.swing.*;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.LineBorder;
-import javax.swing.border.MatteBorder;
 import java.awt.*;
 
-public class SettingsPanel extends JPanel {
+public class SettingsPanel extends JPanel implements Observer {
     Subject dataset;
     public SettingsPanel(Subject dataset){
         this.dataset = dataset;
-        setBackground(Color.darkGray);
         setDimensions();
-
-        var layout = new GroupLayout(this);
+        setBackground(Color.darkGray);
+        var layout = new BoxLayout(this, BoxLayout.PAGE_AXIS);
         this.setLayout(layout);
-        layout.setAutoCreateGaps(true);
-        layout.setAutoCreateContainerGaps(true);
 
+        add(Box.createRigidArea(new Dimension(0, 10)));
+        JLabel label = new JLabel("Select number of Clusters:");
+        label.setForeground(Color.white);
+        label.setFont(new Font("Helvetica", 0, 15));
+        label.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(label);
+        add(Box.createRigidArea(new Dimension(0, 10)));
+        JSlider slider = createSlider();
+        add(slider);
+        add(Box.createRigidArea(new Dimension(0, 20)));
+
+        JPanel buttonPane = new JPanel();
+        buttonPane.setBackground(Color.darkGray);
+        buttonPane.add(Box.createRigidArea(new Dimension(10, 0)));
+        buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
         JButton clusterButton = createButton("Cluster");
-        clusterButton.addActionListener(e -> this.dataset.applyClustering());
+        clusterButton.addActionListener(e -> this.dataset.applyClustering(slider.getValue()));
+        buttonPane.add(clusterButton);
+        buttonPane.add(Box.createHorizontalGlue());
         JButton reset = createButton("reset");
         reset.addActionListener(e -> this.dataset.reset());
+        buttonPane.add(reset);
+        buttonPane.add(Box.createRigidArea(new Dimension(10, 0)));
+        add(buttonPane);
 
-        JTextField csvInput = new JTextField();
-        csvInput.setBorder(BorderFactory.createEmptyBorder());
-        csvInput.setPreferredSize(new Dimension(150, 25));
-        csvInput.setMaximumSize(new Dimension(150, 25));
-        csvInput.setMinimumSize(new Dimension(150,25));
-        JButton loadCSV = createButton("load Csv file!");
+        add(Box.createRigidArea(new Dimension(0, 20)));
+        JTextField csvInput = createTextfield();
+        add(csvInput);
+        add(Box.createRigidArea(new Dimension(0, 20)));
+        JButton loadCSV = createButton("load csv file!");
+        add(loadCSV);
         loadCSV.addActionListener(e -> ((DataSet)dataset).loadData(csvInput.getText().strip()));
 
-        layout.setHorizontalGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER).addComponent(reset).addComponent(csvInput))
-                .addGroup(layout.createParallelGroup().addComponent(clusterButton).addComponent(loadCSV)));
-        layout.setVerticalGroup(layout.createSequentialGroup().addGroup(
-                layout.createParallelGroup().addComponent(reset).addComponent(clusterButton))
-                .addComponent(csvInput)
-                .addComponent(loadCSV));
     }
 
     private void setDimensions(){
@@ -55,6 +62,37 @@ public class SettingsPanel extends JPanel {
         button.setBorderPainted(false);
         button.setBackground(new Color(161, 188, 201));
         button.setFocusable(false);
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
         return button;
+    }
+
+    private JTextField createTextfield(){
+        JTextField textfield = new JTextField();
+        textfield.setBorder(BorderFactory.createEmptyBorder());
+        textfield.setPreferredSize(new Dimension(150, 25));
+        textfield.setMaximumSize(new Dimension(150, 25));
+        textfield.setMinimumSize(new Dimension(150,25));
+
+        return textfield;
+
+    }
+
+    private JSlider createSlider(){
+        int maxClusterCount = dataset.getData().size();
+        JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 10, 5);
+        slider.setMinorTickSpacing(1);
+        slider.setMajorTickSpacing(2);
+        slider.setPaintTicks(true);
+        slider.setPaintLabels(true);
+        slider.setBackground(Color.darkGray);
+        Font font = new Font("Helvetica",0, 12);
+        slider.setFont(font);
+        slider.setForeground(Color.white);
+        return slider;
+    }
+
+    @Override
+    public void updateObserver() {
+        paintImmediately(0, 0, getWidth(), getHeight());
     }
 }
