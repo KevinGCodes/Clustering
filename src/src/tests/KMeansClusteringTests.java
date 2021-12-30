@@ -2,9 +2,8 @@ package tests;
 
 import Model.Point;
 import org.junit.Test;
-import Model.KMeansClustering;
+import Algorithms.KMeansClustering;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

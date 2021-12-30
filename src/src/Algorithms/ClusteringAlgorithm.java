@@ -1,4 +1,4 @@
-package io.Algorithms;
+package Algorithms;
 
 import Model.Point;
 

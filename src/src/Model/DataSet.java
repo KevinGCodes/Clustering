@@ -1,5 +1,7 @@
 package Model;
 
+import Algorithms.ClusteringAlgorithm;
+import Algorithms.KMeansClustering;
 import io.CSVLoader;
 
 import java.util.ArrayList;
@@ -77,8 +79,8 @@ public class DataSet implements Subject {
         this.notifyObservers();
     }
     @Override
-    public void applyClustering(){
-        var clustering = ((KMeansClustering)clusteringAlg).cluster(4);
+    public void applyClustering(int k){
+        var clustering = ((KMeansClustering)clusteringAlg).cluster(k);
         this.clusterCount = clustering.keySet().size();
         var lists = clustering.values().stream().collect(Collectors.toList());
         for(int i = 0; i < lists.size(); i++){

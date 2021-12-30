@@ -8,15 +8,17 @@ import java.awt.*;
 public class MainFrame extends JFrame {
     Subject dataset;
 
-    public MainFrame(Subject dataset, DataPlot dataplot){
+    public MainFrame(Subject dataset){
         super("Clustering");
         this.dataset = dataset;
+        var dataplot = new DataPlot(dataset);
+        dataset.attachObserver(dataplot);
+        var settingsPanel = new SettingsPanel(this.dataset);
+        dataset.attachObserver(settingsPanel);
 
         this.setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(new Dimension(800, 800));
-        this.setBackground(Color.WHITE);
-        var settingsPanel = new SettingsPanel(this.dataset);
 
         var contentPane = this.getContentPane();
         contentPane.setBackground(Color.black);

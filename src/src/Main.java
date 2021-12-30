@@ -8,9 +8,6 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args){
-        DataSet dataset = new DataSet();
-        var plot = new DataPlot(dataset);
-        MainFrame frame = new MainFrame(dataset, plot);
-        dataset.attachObserver(plot);
+        MainFrame frame = new MainFrame(new DataSet());
     }
 }
