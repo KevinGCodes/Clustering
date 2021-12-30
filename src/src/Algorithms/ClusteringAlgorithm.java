@@ -1,4 +1,6 @@
-package Model;
+package io.Algorithms;
+
+import Model.Point;
 
 import java.util.List;
 import java.util.Map;
