@@ -11,5 +11,5 @@ public interface Subject {
     List<Point> getData();
     void applyClustering();
     void reset();
-    void addPoint(float x, float y);
+    void addPoint(double x, double y);
 }

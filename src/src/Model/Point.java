@@ -13,7 +13,7 @@ public class Point {
         this.y = y;
     }
 
-    public Point(float x, float y){
+    public Point(double x, double y){
         this.col = 1;
         this.x = x;
         this.y = y;
